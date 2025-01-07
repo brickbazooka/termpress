@@ -3,6 +3,7 @@ from block_markdown import (
 	markdown_to_blocks,
 	markdown_to_html_node,
 	block_to_block_type,
+	extract_title,
 	BlockType
 )
 
@@ -165,6 +166,31 @@ this is paragraph text
 			"<div><pre><code>This is a code block\n</code></pre><p>this is paragraph text</p></div>",
 		)
 
+	def test_extract_title(self):
+		md = """
+# An Awesome Article
+
+Awesome text
+
+## An Awesome Subheader
+"""
+		title = extract_title(md)
+		self.assertEqual("An Awesome Article", title)
+
+		md_with_metadata = """
+---
+layout: awesome-post
+author: Brick Bazooka
+---
+
+Awesome text
+
+# An Awesome Post
+
+## An Awesome Subheader
+"""
+		title_in_post_with_meta = extract_title(md_with_metadata)
+		self.assertEqual("An Awesome Post", title_in_post_with_meta)
 
 if __name__ == "__main__":
 	unittest.main()

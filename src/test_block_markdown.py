@@ -1,5 +1,5 @@
 import unittest
-from block_markdown import markdown_to_blocks
+from block_markdown import markdown_to_blocks, block_to_block_type, BlockType
 
 
 class TestMarkdownToHTML(unittest.TestCase):
@@ -46,6 +46,19 @@ This is the same paragraph on a new line
 			],
 		)
 
+	def test_block_to_block_types(self):
+		block = "# heading"
+		self.assertEqual(block_to_block_type(block), BlockType.HEADING.value)
+		block = "```\ncode\n```"
+		self.assertEqual(block_to_block_type(block), BlockType.CODE.value)
+		block = "> quote\n> more quote"
+		self.assertEqual(block_to_block_type(block), BlockType.QUOTE.value)
+		block = "* list\n* items"
+		self.assertEqual(block_to_block_type(block), BlockType.ULIST.value)
+		block = "1. list\n2. items"
+		self.assertEqual(block_to_block_type(block), BlockType.OLIST.value)
+		block = "paragraph"
+		self.assertEqual(block_to_block_type(block), BlockType.PARAGRAPH.value)
 
 if __name__ == "__main__":
 	unittest.main()

@@ -28,7 +28,7 @@ class TextNode():
 		return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
 	
 	def to_html_node(self):
-		match(self.text_type):
+		match self.text_type:
 			case TextType.TEXT:
 				return LeafNode(None, self.text)
 			case TextType.BOLD:

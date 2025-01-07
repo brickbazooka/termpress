@@ -1,5 +1,5 @@
 import unittest
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -10,40 +10,16 @@ class TestHTMLNode(unittest.TestCase):
 			None,
 			{"class": "greeting", "href": "https://boot.dev"},
 		)
-		node2 = HTMLNode(
-			"div",
-			"I wish I could read",
-		)
-		self.assertEqual(
-			node.props_to_html(),
-			' class="greeting" href="https://boot.dev"',
-		)
-		self.assertEqual(
-			node2.props_to_html(),
-			"",
-		)
+		node2 = HTMLNode("div", "I wish I could read")
+		self.assertEqual(node.props_to_html(), ' class="greeting" href="https://boot.dev"')
+		self.assertEqual(node2.props_to_html(), "")
 
 	def test_values(self):
-		node = HTMLNode(
-			"div",
-			"I wish I could read",
-		)
-		self.assertEqual(
-			node.tag,
-			"div",
-		)
-		self.assertEqual(
-			node.value,
-			"I wish I could read",
-		)
-		self.assertEqual(
-			node.children,
-			None,
-		)
-		self.assertEqual(
-			node.props,
-			None,
-		)
+		node = HTMLNode("div", "I wish I could read")
+		self.assertEqual(node.tag, "div")
+		self.assertEqual(node.value, "I wish I could read")
+		self.assertEqual(node.children, None)
+		self.assertEqual(node.props, None)
 
 	def test_repr(self):
 		node = HTMLNode(
@@ -56,6 +32,14 @@ class TestHTMLNode(unittest.TestCase):
 			node.__repr__(),
 			"HTMLNode(p, What a strange world, children: None, {'class': 'primary'})",
 		)
+		
+	def test_to_html_no_children(self):
+		node = LeafNode("p", "Hello, world!")
+		self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+
+	def test_to_html_no_tag(self):
+		node = LeafNode(None, "Hello, world!")
+		self.assertEqual(node.to_html(), "Hello, world!")
 
 
 if __name__ == "__main__":
